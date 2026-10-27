@@ -41,7 +41,8 @@
       "name": "Нейрошторм",
       "alternateName": "NeuroStorm Studio",
       "description": "Видимость в нейросетях и поиске, сайты, Яндекс Директ, ИИ-инструменты для местного бизнеса.",
-      "areaServed": ["Москва", "Московская область"],
+      "areaServed": {"@type": "Country", "name": "Россия"},
+    "address": {"@type": "PostalAddress", "addressLocality": "Москва", "addressCountry": "RU"},
       "founder": { "@id": "#alexander" },
       "makesOffer": [
         { "@type": "Offer", "name": "Видимость под ключ", "priceSpecification": { "@type": "PriceSpecification", "minPrice": 150000, "priceCurrency": "RUB" } },
@@ -227,7 +228,9 @@ html.tinted .light-sec { background: transparent; }
 .case-name { position: absolute; left: 22px; bottom: 6px; font-size: clamp(56px, 9vw, 150px); font-weight: 500; letter-spacing: -.055em; line-height: 1; }
 .art-studio { background: radial-gradient(circle at 64% 46%, transparent 0 13%, #e9e5f7 13.6%, #8d86a6 17%, #2b2638 20%, #d8d3ea 22.5%, transparent 23.4%), radial-gradient(circle at 64% 46%, rgba(169, 155, 255, .9) 0 6%, transparent 13%), radial-gradient(65% 80% at 70% 60%, #6E55FF 0%, #2A1C7A 45%, #0C0A12 82%); }
 .art-sr { background: radial-gradient(50% 60% at 62% 70%, rgba(245, 165, 36, .38), transparent 70%), repeating-linear-gradient(90deg, rgba(245, 165, 36, .08) 0 1px, transparent 1px 64px), repeating-linear-gradient(0deg, rgba(245, 165, 36, .08) 0 1px, transparent 1px 64px), #0B0F14; }
-.art-sr::before { content: ""; position: absolute; left: 50%; bottom: 0; width: 7%; height: 46%; background: linear-gradient(#2a2f38, #12161c); box-shadow: 10vw 6vh 0 -1vw #1b2027, -9vw 9vh 0 -1vw #1b2027, inset 0 0 0 1px rgba(245, 165, 36, .3); }
+.art-sr::before { content: ""; position: absolute; left: 38%; top: 13%; width: 50%; aspect-ratio: 16 / 10; border-radius: 14px; background: url(assets/case-stroyradar.webp) center / cover; box-shadow: 0 40px 90px rgba(0, 0, 0, .55), 0 0 0 1px rgba(245, 165, 36, .25); transform: perspective(1800px) rotateY(-9deg) rotateX(3deg); }
+.art-pr { background: radial-gradient(60% 70% at 70% 40%, rgba(242, 239, 234, .16), transparent 70%), radial-gradient(80% 90% at 30% 80%, #2a2724, #0f0e0d 75%); }
+.art-pr::before { content: ""; position: absolute; left: 38%; top: 13%; width: 50%; aspect-ratio: 16 / 10; border-radius: 14px; background: url(assets/case-prostranstvo.webp) center / cover; box-shadow: 0 40px 90px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .12); transform: perspective(1800px) rotateY(-9deg) rotateX(3deg); }
 .art-obraz { background: radial-gradient(60% 70% at 70% 40%, rgba(255, 95, 130, .22), transparent 70%), radial-gradient(80% 90% at 30% 80%, #2a1622, #120a10 75%); }
 .art-obraz::before { content: ""; position: absolute; left: 38%; top: 13%; width: 50%; aspect-ratio: 16 / 10; border-radius: 14px; background: url(assets/case-obraz.jpg) center / cover; box-shadow: 0 40px 90px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .1); transform: perspective(1800px) rotateY(-9deg) rotateX(3deg); }
 a.case-tag { color: inherit; text-decoration: none; pointer-events: auto; }
@@ -352,7 +355,8 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
   .cases-pin { height: auto; display: block; overflow: visible; }
   .cases-track { flex-direction: column; gap: 16px; }
   .case { flex: none; width: 100%; height: 62svh; }
-  .art-obraz::before { left: 12%; top: 22%; width: 76%; transform: none; }
+  .case-name { font-size: clamp(36px, 11.5vw, 56px); }
+  .art-obraz::before, .art-sr::before, .art-pr::before { left: 12%; top: 22%; width: 76%; transform: none; }
   .case-meta { right: 130px; }
   .steps { grid-template-columns: 1fr 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
@@ -405,7 +409,7 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
           <p class="lead" data-rise>Продвижение в Яндексе и нейросетях, сайты с 3D, Яндекс Директ, внедрение ИИ и ролики. Начнём с бесплатной проверки: советует ли вас нейросеть.</p>
           <div class="btns" data-rise><a class="btn btn-white" href="#check">Проверить бесплатно</a><a class="btn btn-glass" href="#services">Что я делаю</a></div>
         </div>
-        <p class="hero-note" data-rise>Москва и Подмосковье · отвечаю в Telegram</p>
+        <p class="hero-note" data-rise>Студия в Москве · работаем по всей России</p>
       </div>
     </div>
   </section>
@@ -475,9 +479,10 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
     </div>
     <div class="cases-pin">
       <div class="cases-track">
-        <article class="case"><div class="case-img art-studio"></div><div class="case-meta"><span>Студия</span><span>2026</span><span>Эксперимент: попасть в ответы нейросетей</span></div><h3 class="case-name">Студия</h3></article>
+        <article class="case"><div class="case-img art-studio"></div><div class="case-meta"><span>Студия</span><span>2026</span><span>Иммерсивный сайт и продвижение</span></div><span class="chip case-tag">живой сайт</span><h3 class="case-name">Студия</h3></article>
         <article class="case"><div class="case-img art-obraz"></div><div class="case-meta"><span>Образ</span><span>2026</span><span>Иммерсивный лендинг и бот в Telegram</span></div><a class="chip case-tag" href="https://getobraz.ru" target="_blank" rel="noopener">getobraz.ru ↗</a><h3 class="case-name">Образ</h3></article>
-        <article class="case"><div class="case-img art-sr"></div><div class="case-meta"><span>СтройРадар</span><span>2026</span><span>Сайт и 3D-демо</span></div><span class="chip case-tag">концепт</span><h3 class="case-name">СтройРадар</h3></article>
+        <article class="case"><div class="case-img art-sr"></div><div class="case-meta"><span>СтройРадар</span><span>2026</span><span>Лендинг и витрина заявок</span></div><a class="chip case-tag" href="https://stroy-radar.ru" target="_blank" rel="noopener">stroy-radar.ru ↗</a><h3 class="case-name">СтройРадар</h3></article>
+        <article class="case"><div class="case-img art-pr"></div><div class="case-meta"><span>Пространство</span><span>2026</span><span>Сайт для ремонта премиум-класса</span></div><a class="chip case-tag" href="/keysy/prostranstvo-koncept/" target="_blank" rel="noopener">концепт ↗</a><h3 class="case-name">Пространство</h3></article>
         <article class="case"><div class="case-img art-you"></div><div class="case-meta"><span>Ваш проект</span><span>2026</span><span>Замер до и после - кейс с вашего согласия</span></div><a class="chip case-tag" href="https://t.me/AlexandrErmoshin" data-tg>Обсудить в Telegram ↗</a><h3 class="case-name">Ваш бизнес</h3></article>
       </div>
     </div>
@@ -520,9 +525,9 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
   <section class="stats sec" id="stats">
     <div class="sec-head">
       <p class="eyebrow">Цифры студии</p>
-      <h2 class="h2" data-split><span>Открыто, раз в месяц.</span> <span class="t2">Без красивых округлений</span></h2>
+      <h2 class="h2" data-split><span>Открыто, раз в квартал.</span> <span class="t2">Без красивых округлений</span></h2>
     </div>
-    <div class="stats-box" id="statsBox"><div class="stats-empty" data-reveal><i class="dot"></i>Первый открытый отчёт - 1 декабря 2026</div></div>
+    <div class="stats-box" id="statsBox"><div class="stats-empty" data-reveal><i class="dot"></i>Первый открытый отчёт - январь 2027, итоги IV квартала 2026</div></div>
   </section>
 
   <!-- 10. Кто я -->
@@ -531,8 +536,8 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
       <div class="portrait" data-reveal><div class="pt-plate"></div><img class="pt-person" src="assets/alexander.webp" alt="Александр Ермошин" width="1200" height="1200" loading="lazy" decoding="async"><div class="pt-front" aria-hidden="true"></div></div>
       <div>
         <p class="eyebrow">Кто я</p>
-        <p class="big" data-reveal>Александр Ермошин. Основатель студии, дизайнер, ИИ&#8209;энтузиаст. <span class="t2">Давно и плотно в проектах с ИИ. За плечами - digital-маркетинг, e-commerce, fintech и B2B.</span></p>
-        <p style="color:var(--fog);margin-top:22px;max-width:36em" data-reveal>Делаю сайты и маркетинг вместе с ИИ-агентами: они ищут и проверяют, я делаю и отвечаю за результат. Путь студии показываю открыто в блоге.</p>
+        <p class="big" data-reveal>Александр Ермошин. Основатель студии, дизайнер, ИИ&#8209;энтузиаст. <span class="t2">За плечами - digital-маркетинг, e-commerce, fintech и B2B.</span></p>
+        <p style="color:var(--fog);margin-top:22px;max-width:36em" data-reveal>Основа - опыт в маркетинге, дизайне и e-commerce. ИИ его ускоряет: проверка видимости - за 24 часа, семантическое ядро на тысячу с лишним запросов - за день. Решения и качество - за мной. Путь студии показываю открыто в блоге.</p>
         <div class="btns" data-reveal><a class="btn btn-white" href="/o-studii/">О студии</a><a class="btn btn-glass" href="https://t.me/NeyroshtormAi">Блог в Telegram</a></div>
       </div>
     </div>
@@ -576,7 +581,7 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
 
 <footer class="foot">
   <div class="foot-in">
-    <div><div class="foot-brand" data-brand>Нейрошторм</div><p style="margin-top:10px;max-width:22em">Маркетинговое ИИ-агентство: продвижение в Яндексе и нейросетях, сайты, Яндекс Директ, внедрение ИИ и видеопродакшн. Москва и Подмосковье.</p></div>
+    <div><div class="foot-brand" data-brand>Нейрошторм</div><p style="margin-top:10px;max-width:22em">Маркетинговое ИИ-агентство: продвижение в Яндексе и нейросетях, сайты, Яндекс Директ, внедрение ИИ и видеопродакшн. Студия находится в Москве, работаем по всей России.</p></div>
     <div class="foot-col"><a href="/uslugi/">Услуги</a><a href="/keysy/">Кейсы</a><a href="/stati/">Статьи</a><a href="/ceny/">Цены</a><a href="/o-studii/">О студии</a><a href="/voprosy/">Вопросы</a><a href="/kontakty/">Контакты</a></div>
     <div class="foot-col"><a href="https://t.me/AlexandrErmoshin" data-tg>Telegram</a><a href="/politika/">Политика обработки персональных данных</a>
 <span>Александр Ермошин, ИП</span><span data-inn>ИНН и ОГРНИП будут указаны</span></div>

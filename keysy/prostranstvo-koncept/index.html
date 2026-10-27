@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Пространство · концепт сайта от студии Нейрошторм</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Cormorant+Garamond:ital,wght@1,400&display=swap">
+<style>
+/* Концепт сайта «Пространство»: люкс-ремонт. Тёплый графит + камень + кость, лайм бренда - только точкой.
+   Лоадер-монограмма над колодой фото → пролёт камеры от прокрутки со словами по углам → кейс за матовым стеклом
+   → процесс 01-05 с карточкой к курсору → счётчики и монограмма-переход в камень → футер-занавес. */
+:root{
+  --ink:#0E0D0C; --graphite:#1B1A18; --stone:#D9D5CE; --bone:#F2EFEA; --mute-d:rgba(242,239,234,.62); --mute-l:#5F5A53;
+  --line-d:rgba(242,239,234,.18); --line-l:rgba(14,13,12,.16); --lime:#D9F05E;
+  --f-sans:"Jost","Futura PT","Futura","Century Gothic",system-ui,sans-serif;
+  --f-serif:"Cormorant Garamond","Cormorant",Georgia,"Times New Roman",serif;
+  --gx:max(20px,env(safe-area-inset-left,0px),3.6vw);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:var(--ink)}
+body{background:var(--ink);color:var(--bone);font-family:var(--f-sans);font-weight:400;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.it{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+
+/* ---------- лоадер ---------- */
+.loader{position:fixed;inset:0;z-index:50;background:var(--ink);display:grid;place-items:center;overflow:hidden}
+.deck{position:absolute;left:50%;top:50%;width:0;height:0}
+.card{position:absolute;max-width:none;width:clamp(150px,17vw,250px);aspect-ratio:4/5;left:0;top:0;transform:translate(-50%,-50%);object-fit:cover;border-radius:2px;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.mono{position:relative;z-index:2;width:clamp(96px,10vw,136px);aspect-ratio:1;display:grid;place-items:center;mix-blend-mode:difference}
+.mono svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.mono rect{fill:none;stroke-width:2.2}
+.mono .fr-bg{stroke:rgba(255,255,255,.22)}
+.mono .fr{stroke:#fff;stroke-dasharray:464;stroke-dashoffset:464}
+.mono span{font-weight:500;font-size:clamp(17px,1.75vw,24px);line-height:.98;letter-spacing:.04em;color:#fff;text-align:center}
+.ld-meta{position:absolute;left:var(--gx);right:var(--gx);bottom:calc(22px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;color:var(--mute-d)}
+#pct{font-variant-numeric:tabular-nums}
+
+/* ---------- навигация ---------- */
+.nav{position:fixed;z-index:40;left:0;right:0;top:0;padding:calc(16px + env(safe-area-inset-top,0px)) var(--gx) 16px;display:flex;align-items:center;justify-content:space-between;gap:20px;pointer-events:none}
+.nav > *{pointer-events:auto}
+.brand{display:flex;align-items:center;gap:10px;mix-blend-mode:difference;color:#fff}
+.brand i{display:grid;place-items:center;width:28px;height:28px;border:1.5px solid #fff;font-style:normal;font-size:6.4px;line-height:.95;font-weight:500;letter-spacing:.03em;text-align:center}
+.brand b{font-weight:500;font-size:13px;letter-spacing:.22em}
+.links{display:flex;gap:28px;mix-blend-mode:difference;color:#fff}
+.links a{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.links a:hover{opacity:1}
+.cta{white-space:nowrap;display:inline-flex;align-items:center;gap:10px;background:var(--bone);color:var(--ink);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:11px 16px;border-radius:2px}
+.cta::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 1px rgba(14,13,12,.25)}
+a:focus-visible,button:focus-visible{outline:1.5px solid var(--lime);outline-offset:4px}
+
+/* ---------- первый экран: пролёт ---------- */
+.hero{position:relative;height:100svh;overflow:hidden;background:var(--ink)}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,9,8,.45) 0%,rgba(10,9,8,.08) 28%,rgba(10,9,8,.1) 60%,rgba(10,9,8,.52) 100%);pointer-events:none}
+.w{position:absolute;text-shadow:0 2px 40px rgba(10,9,8,.35);font-weight:300;font-size:clamp(42px,8.4vw,150px);line-height:.95;letter-spacing:-.025em;color:var(--bone);white-space:nowrap;will-change:transform,opacity,filter}
+.w .wi{display:inline-block;will-change:transform,opacity,filter}
+.w .it{font-size:1.12em;line-height:.8}
+.tl{left:var(--gx);top:calc(13svh + env(safe-area-inset-top,0px))}
+.tr{right:var(--gx);top:calc(13svh + env(safe-area-inset-top,0px))}
+.ml{left:var(--gx);top:46svh}
+.mr{right:var(--gx);top:46svh}
+.bl{left:var(--gx);bottom:calc(9svh + env(safe-area-inset-bottom,0px))}
+.br{right:var(--gx);bottom:calc(9svh + env(safe-area-inset-bottom,0px))}
+.hero-note{position:absolute;right:var(--gx);bottom:calc(26px + env(safe-area-inset-bottom,0px));max-width:300px;font-size:13px;color:var(--mute-d);text-align:right}
+.hint{position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);color:var(--mute-d)}
+.hint::after{content:"";display:block;width:1px;height:34px;margin:10px auto 0;background:linear-gradient(var(--bone),transparent);animation:drip 2.4s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- кейс за матовым стеклом ---------- */
+.case{position:relative;height:120svh;overflow:hidden;background:var(--graphite)}
+.case-img{position:absolute;inset:-6% -10%;background:url("koncept/img/s-31-5.webp") center/cover no-repeat;will-change:transform}
+.case-panel{position:absolute;left:var(--gx);top:calc(12svh + 40px);bottom:10svh;width:min(500px,calc(100% - 2*var(--gx)));padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;gap:24px;
+  background:linear-gradient(160deg,rgba(40,37,33,.42),rgba(20,19,17,.28));-webkit-backdrop-filter:blur(26px) saturate(125%);backdrop-filter:blur(26px) saturate(125%);border:1px solid rgba(242,239,234,.14);border-radius:3px}
+.case-panel h2{font-weight:300;font-size:clamp(38px,4.6vw,72px);line-height:1;letter-spacing:-.02em}
+.case-panel p{color:var(--mute-d);font-size:15px;max-width:34ch}
+.case-meta{display:grid;gap:10px}
+.case-meta div{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line-d);padding-top:10px;font-size:14px}
+.case-meta span{color:var(--mute-d)}
+.more{display:inline-flex;gap:10px;align-items:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.more::after{content:"→";font-size:15px;letter-spacing:0}
+
+/* ---------- процесс ---------- */
+.process{position:relative;height:100svh;overflow:hidden;background:var(--ink)}
+.p-head{position:absolute;left:0;right:0;top:calc(13svh + env(safe-area-inset-top,0px));text-align:center;color:var(--mute-d)}
+.p-list{position:absolute;left:0;right:0;top:50%;text-align:center;will-change:transform;z-index:3;text-shadow:0 2px 24px rgba(0,0,0,.45)}
+.p-line{height:var(--lh);display:flex;align-items:center;justify-content:center;font-weight:300;font-size:clamp(30px,5.4vw,84px);letter-spacing:-.02em;white-space:nowrap;transition:opacity .6s,filter .6s;opacity:.18;filter:blur(5px)}
+.p-line.on{opacity:1;filter:none}
+.p-line em{font-style:normal;color:var(--mute-d);margin-right:.35em}
+.p-card-wrap{position:absolute;left:50%;top:50%;width:clamp(200px,24vw,360px);aspect-ratio:4/3;transform:translate(-50%,-50%);perspective:900px;pointer-events:none;z-index:1}
+.p-card{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform;box-shadow:0 40px 80px rgba(0,0,0,.55);border-radius:2px;overflow:hidden;background:#1E1D1B}
+.p-card > *{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s ease}
+.p-card > .on{opacity:1}
+.p-card svg{padding:9%;background:#1E1D1B}
+.plan line,.plan path,.plan rect,.plan circle{fill:none;stroke:var(--bone);vector-effect:non-scaling-stroke}
+.plan .wall{stroke-width:3.2}
+.plan .thin{stroke-width:1;opacity:.55}
+.plan .furn{stroke-width:1.1;opacity:.9}
+.plan text{fill:var(--mute-d);font-family:var(--f-sans);font-size:9px;letter-spacing:.08em}
+.p-desc{position:absolute;left:50%;bottom:calc(9svh + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(440px,calc(100% - 2*var(--gx)));text-align:center;color:var(--mute-d);font-size:15px;min-height:4.5em}
+.p-count{position:absolute;right:var(--gx);bottom:calc(9svh + env(safe-area-inset-bottom,0px));color:var(--mute-d);font-variant-numeric:tabular-nums}
+
+/* ---------- счётчики и переход ---------- */
+.nums{position:relative;height:100svh;overflow:hidden;background:var(--ink)}
+.num{position:absolute;display:grid;gap:10px}
+.num.a{left:var(--gx);bottom:calc(9svh + env(safe-area-inset-bottom,0px))}
+.num.b{right:var(--gx);bottom:calc(9svh + env(safe-area-inset-bottom,0px));text-align:right;justify-items:end}
+.num.c{right:var(--gx);top:calc(13svh + env(safe-area-inset-top,0px));text-align:right;justify-items:end}
+.drum{font-variant-numeric:tabular-nums;display:flex;font-weight:300;font-size:clamp(84px,13vw,220px);line-height:1;letter-spacing:-.04em;height:1em;overflow:hidden}
+.drum .col{display:flex;flex-direction:column;will-change:transform,filter}
+.drum .col span{height:1em;display:block;width:.56em;text-align:center}
+.num p{color:var(--mute-d);font-size:14px;max-width:24ch}
+.num-head{position:absolute;left:var(--gx);top:calc(13svh + env(safe-area-inset-top,0px));max-width:18ch;font-weight:300;font-size:clamp(24px,2.4vw,36px);line-height:1.15}
+.sq{position:absolute;left:50%;top:50%;width:clamp(64px,7vw,100px);aspect-ratio:1;margin:calc(clamp(64px,7vw,100px) / -2) 0 0 calc(clamp(64px,7vw,100px) / -2);border:1.5px solid var(--bone);will-change:transform}
+.sq::before{content:"";position:absolute;inset:0;background:var(--stone);transform:scale(var(--fill,0));transition:none}
+
+/* ---------- камень: условия ---------- */
+.stone{background:var(--stone);color:var(--ink);padding:clamp(80px,14vh,160px) var(--gx) clamp(80px,12vh,140px);display:grid;gap:clamp(40px,7vh,80px);justify-items:center;text-align:center}
+.stone .lbl{color:var(--mute-l)}
+.stone h2{font-weight:300;font-size:clamp(32px,4.2vw,64px);line-height:1.05;letter-spacing:-.02em;max-width:18ch;text-wrap:balance}
+.stone-card{width:min(300px,70vw);aspect-ratio:4/5;position:relative;overflow:hidden;border-radius:2px}
+.stone-card img{width:100%;height:100%;object-fit:cover}
+.stone-card .pill{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--ink);color:var(--bone);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:9px 14px;border-radius:2px;white-space:nowrap}
+.terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,4vw,64px);width:min(1100px,100%);text-align:left}
+.terms div{border-top:1px solid var(--line-l);padding-top:16px;display:grid;gap:8px}
+.terms b{font-weight:500;font-size:17px}
+.terms span{color:var(--mute-l);font-size:15px}
+
+/* ---------- основатели ---------- */
+.founders{background:var(--stone);color:var(--ink);padding:clamp(72px,10vh,130px) var(--gx) clamp(60px,9vh,110px);display:grid;gap:clamp(28px,5vh,56px)}
+.f-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:end}
+.f-head .lbl{color:var(--mute-l);grid-column:1/-1}
+.f-head h2{font-weight:300;font-size:clamp(34px,4.4vw,68px);line-height:1.02;letter-spacing:-.02em;max-width:14ch;text-wrap:balance}
+.f-head p{color:var(--mute-l);font-size:15px;max-width:40ch;justify-self:end}
+.f-row{display:flex;gap:14px;height:min(66svh,680px)}
+.f{position:relative;flex:1 1 0;min-width:0;overflow:hidden;border-radius:2px;background:#24221F;color:var(--bone);transition:flex-grow .9s cubic-bezier(.7,0,.2,1)}
+.f-row:hover .f{flex-grow:.72}
+.f-row .f:hover,.f-row .f:focus-within{flex-grow:1.4}
+.f-photo{position:absolute;inset:0;overflow:hidden}
+.f-photo::before{content:"";position:absolute;inset:-30px;background:var(--bg) center/cover no-repeat;filter:grayscale(1) blur(16px) brightness(.42);transform:scale(1.05);transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.f:hover .f-photo::before{transform:scale(1.12)}
+.f-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,13,12,0) 35%,rgba(14,13,12,.78) 100%)}
+.f-ph{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);width:clamp(100px,10vw,150px);aspect-ratio:3/4;border:1px solid rgba(242,239,234,.4);display:grid;place-items:center;text-align:center;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,239,234,.7);line-height:1.6;z-index:1}
+.f-ph b{display:block;white-space:nowrap;font-family:var(--f-serif);font-style:italic;font-weight:400;font-size:clamp(34px,3.4vw,54px);letter-spacing:0;text-transform:none;color:var(--bone);line-height:1;margin-bottom:6px}
+.f-body{position:absolute;left:clamp(20px,2.6vw,36px);right:clamp(20px,2.6vw,36px);bottom:clamp(20px,3vw,36px);display:grid;gap:10px;z-index:2}
+.f-body .lbl{color:rgba(242,239,234,.7)}
+.f-body h3{font-weight:300;font-size:clamp(30px,3.2vw,52px);line-height:1;letter-spacing:-.02em;overflow:hidden}
+.f-body h3 span{display:inline-block}
+.f-body blockquote{font-family:var(--f-serif);font-style:italic;font-size:clamp(19px,1.6vw,24px);line-height:1.25;max-width:30ch;color:rgba(242,239,234,.88);opacity:.0;transform:translateY(10px);transition:opacity .7s,transform .7s}
+.f:hover blockquote,.f:focus-within blockquote,.f-row:not(:hover) .f:first-child blockquote{opacity:1;transform:none}
+.f-facts{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:rgba(242,239,234,.7)}
+.f-note{color:var(--mute-l);font-size:13px}
+@media (hover:none),(max-width:820px){
+  .f-head{grid-template-columns:1fr}
+  .f-head p{justify-self:start}
+  .f-row{flex-direction:column;height:auto}
+  .f{flex:none;height:72svh}
+  .f-body blockquote{opacity:1;transform:none}
+}
+
+/* ---------- назад к КП ---------- */
+.back{position:fixed;z-index:45;left:calc(var(--gx) + env(safe-area-inset-left,0px) * 0);bottom:calc(18px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:10px;padding:11px 16px;border-radius:2px;background:rgba(14,13,12,.62);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(242,239,234,.22);color:var(--bone);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
+.back:hover{background:rgba(14,13,12,.82)}
+
+/* ---------- футер-занавес ---------- */
+.page{position:relative;z-index:2;background:var(--ink)}
+.curtain{position:sticky;bottom:0;z-index:1;height:100svh;overflow:hidden;background:var(--graphite)}
+.cur-img{position:absolute;inset:0;background:url("koncept/img/s-27-4.webp") center/cover no-repeat}
+.cur-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,9,8,.78),rgba(10,9,8,.42) 42%,rgba(10,9,8,.25) 62%,rgba(10,9,8,.6))}
+.cur-top{position:absolute;left:var(--gx);right:var(--gx);top:calc(13svh + env(safe-area-inset-top,0px));display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;align-items:start}
+.cur-top h3{font-weight:300;font-size:clamp(30px,3.6vw,56px);line-height:1.05;letter-spacing:-.02em;max-width:16ch}
+.contacts{display:grid;gap:8px;font-size:15px;justify-items:start}
+.contacts span{color:rgba(242,239,234,.8)}
+.wordmark{position:absolute;left:0;right:0;bottom:calc(5svh + 22px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;font-weight:400;font-size:11.4vw;line-height:.82;letter-spacing:-.02em;overflow:hidden;padding:0 1vw}
+.wordmark span{display:inline-block;will-change:transform}
+.fine{position:absolute;left:var(--gx);right:var(--gx);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:16px;font-size:11px;color:var(--mute-d);letter-spacing:.04em}
+
+@media (max-width:820px){
+  .links{display:none}
+  .cta{padding:10px 12px;font-size:11px}
+  .case-panel{top:auto;bottom:calc(6svh + env(safe-area-inset-bottom,0px));height:auto}
+  .terms{grid-template-columns:1fr}
+  .cur-top{grid-template-columns:1fr}
+  .hero-note{display:none}
+  .p-card-wrap{width:62vw}
+  .fine{flex-direction:column;gap:4px}
+  .num.c{display:none}
+  .brand b{display:none}
+  .shade{background:linear-gradient(180deg,rgba(10,9,8,.5) 0%,rgba(10,9,8,.18) 30%,rgba(10,9,8,.22) 60%,rgba(10,9,8,.58) 100%)}
+  .wordmark{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .p-count{top:calc(13svh + env(safe-area-inset-top,0px));bottom:auto}
+}
+@media (prefers-reduced-motion: reduce){
+  .hint::after{animation:none}
+  .p-line{transition:none}
+}
+</style>
+</head>
+<body class="locked">
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="deck" id="deck">
+    <img class="card" src="koncept/img/s-36-2.webp" alt="">
+    <img class="card" src="koncept/img/s-24-6.webp" alt="">
+    <img class="card" src="koncept/img/s-15-5.webp" alt="">
+    <img class="card" src="koncept/img/s-3-0.webp" alt="">
+    <img class="card last" src="koncept/f/000.webp" alt="">
+  </div>
+  <div class="mono" id="mono">
+    <svg viewBox="0 0 120 120" aria-hidden="true"><rect class="fr-bg" x="1" y="1" width="118" height="118"/><rect class="fr" id="fr" x="1" y="1" width="118" height="118"/></svg>
+    <span>ПРО<br>СТР<br>АНС<br>ТВО</span>
+  </div>
+  <div class="ld-meta lbl"><span>Ремонт и дизайн · Москва</span><span id="pct">0</span></div>
+</div>
+
+<a class="back" href="/keysy/">← Кейсы Нейрошторма</a>
+<header class="nav">
+  <a class="brand" href="#hero" aria-label="Пространство, в начало"><i aria-hidden="true">ПРО<br>СТР<br>АНС<br>ТВО</i><b>ПРОСТРАНСТВО</b></a>
+  <nav class="links" aria-label="Разделы"><a href="#case">Проекты</a><a href="#process">Как работаем</a><a href="#founders">Основатели</a><a href="#terms">Условия</a><a href="#contacts">Контакты</a></nav>
+  <a class="cta" href="#contacts">Обсудить проект</a>
+</header>
+
+<div class="page">
+  <section class="hero" id="hero" aria-label="Пространство для жизни">
+    <canvas id="cv" aria-hidden="true"></canvas>
+    <div class="shade"></div>
+    <h1 class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Пространство: дизайн, ремонт и комплектация квартир премиум-класса в Москве</h1>
+    <div class="w tl" data-ph="0"><span class="wi">Пространство</span></div>
+    <div class="w mr" data-ph="0"><span class="wi">для</span></div>
+    <div class="w bl" data-ph="0"><span class="wi it">жизни</span></div>
+    <div class="w tr" data-ph="1"><span class="wi">Точность</span></div>
+    <div class="w ml" data-ph="1"><span class="wi">до</span></div>
+    <div class="w br" data-ph="1"><span class="wi">миллиметра</span></div>
+    <div class="w tl" data-ph="2"><span class="wi">Квартира</span></div>
+    <div class="w mr" data-ph="2"><span class="wi">как на</span></div>
+    <div class="w bl" data-ph="2"><span class="wi it">визуализации</span></div>
+    <p class="hero-note">Дизайн, ремонт и комплектация квартир премиум-класса. Москва, с 2014 года.</p>
+    <div class="hint lbl" id="hint">Листайте</div>
+  </section>
+
+  <section class="case" id="case" aria-labelledby="case-h">
+    <div class="case-img" id="caseImg"></div>
+    <div class="case-panel" id="casePanel">
+      <div style="display:grid;gap:18px">
+        <span class="lbl" style="color:var(--mute-d)">Проект из портфолио</span>
+        <h2 id="case-h">Квартира с видом <span class="it">на Москву</span></h2>
+        <p>Тёплый камень, тёмное дерево и много света. Каждая комната сдана такой, какой была на визуализации.</p>
+      </div>
+      <div class="case-meta">
+        <div><span>Работы</span>дизайн-проект, ремонт</div>
+        <div><span>Комплектация</span>мебель, свет, текстиль</div>
+        <div><span>Надзор</span>авторский, до ключей</div>
+        <a class="more" href="#process" style="margin-top:10px">Смотреть проект</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="process" aria-labelledby="p-h">
+    <div class="p-head lbl" id="p-h">Как мы работаем</div>
+    <div class="p-list" id="pList">
+      <div class="p-line"><em>01 /</em>Приёмка</div>
+      <div class="p-line"><em>02 /</em>Дизайн-проект</div>
+      <div class="p-line"><em>03 /</em>Инженерия</div>
+      <div class="p-line"><em>04 /</em>Отделка</div>
+      <div class="p-line"><em>05 /</em>Комплектация</div>
+    </div>
+    <div class="p-card-wrap"><div class="p-card" id="pCard">
+      <svg class="plan" viewBox="0 0 300 225" aria-hidden="true">
+        <rect class="wall" x="20" y="20" width="260" height="170"/>
+        <line class="wall" x1="150" y1="20" x2="150" y2="95"/><line class="wall" x1="150" y1="125" x2="150" y2="190"/>
+        <line class="wall" x1="150" y1="110" x2="280" y2="110"/>
+        <line class="thin" x1="40" y1="20" x2="120" y2="20" style="stroke-width:5;opacity:.35"/><line class="thin" x1="180" y1="20" x2="260" y2="20" style="stroke-width:5;opacity:.35"/>
+        <path class="thin" d="M150 95 A30 30 0 0 1 180 125"/>
+        <line class="thin" x1="20" y1="205" x2="280" y2="205"/><line class="thin" x1="20" y1="200" x2="20" y2="210"/><line class="thin" x1="280" y1="200" x2="280" y2="210"/>
+        <text x="150" y="219" text-anchor="middle">12 400</text>
+        <text x="28" y="34">АКТ ПРИЁМКИ · 27 ЗАМЕЧАНИЙ</text>
+        <circle class="thin" cx="88" cy="150" r="6" style="opacity:.9"/><circle class="thin" cx="214" cy="60" r="6" style="opacity:.9"/><circle class="thin" cx="246" cy="160" r="6" style="opacity:.9"/>
+      </svg>
+      <svg class="plan" viewBox="0 0 300 225" aria-hidden="true">
+        <rect class="wall" x="20" y="20" width="260" height="170"/>
+        <line class="wall" x1="150" y1="20" x2="150" y2="95"/><line class="wall" x1="150" y1="125" x2="150" y2="190"/>
+        <line class="wall" x1="150" y1="110" x2="280" y2="110"/>
+        <rect class="furn" x="34" y="120" width="92" height="34" rx="3"/><rect class="furn" x="34" y="154" width="30" height="24" rx="3"/>
+        <rect class="furn" x="62" y="70" width="46" height="30" rx="2"/>
+        <rect class="furn" x="176" y="40" width="70" height="52" rx="2"/><rect class="furn" x="180" y="44" width="28" height="14" rx="2"/><rect class="furn" x="214" y="44" width="28" height="14" rx="2"/>
+        <rect class="furn" x="170" y="140" width="96" height="16" rx="1"/><circle class="furn" cx="185" cy="170" r="6"/><circle class="furn" cx="205" cy="170" r="6"/><circle class="furn" cx="225" cy="170" r="6"/><circle class="furn" cx="245" cy="170" r="6"/>
+        <line class="thin" x1="20" y1="205" x2="280" y2="205"/>
+        <text x="150" y="219" text-anchor="middle">ГОСТИНАЯ · КУХНЯ · СПАЛЬНЯ</text>
+      </svg>
+      <img src="koncept/img/s-13-2.webp" alt="">
+      <img src="koncept/img/s-24-6.webp" alt="">
+      <img src="koncept/img/s-36-2.webp" alt="">
+    </div></div>
+    <p class="p-desc" id="pDesc"></p>
+    <div class="p-count lbl" id="pCount">01 / 05</div>
+  </section>
+
+  <section class="nums" id="nums" aria-label="Цифры">
+    <p class="num-head">Один договор от приёмки до последнего светильника</p>
+    <div class="num c"><div class="drum" data-to="2014"></div><p>год основания</p></div>
+    <div class="num a"><div class="drum" data-to="12"></div><p>лет ремонтов в Москве</p></div>
+    <div class="num b"><div class="drum" data-to="5"></div><p>этапов под одним договором</p></div>
+    <div class="sq" id="sq"></div>
+  </section>
+
+  <section class="founders" id="founders" aria-labelledby="f-h">
+    <div class="f-head">
+      <span class="lbl">Основатели</span>
+      <h2 id="f-h">Михаил и Никита, сооснователи «Пространства»</h2>
+      <p>Компанию с 2014 года ведут два сооснователя и равных партнёра.</p>
+    </div>
+    <div class="f-row" id="fRow">
+      <article class="f" tabindex="0" style="--bg:url('koncept/img/s-9-2.webp')">
+        <div class="f-photo"><div class="f-ph"><span><b>М.</b>Портрет<br>на объекте</span></div></div>
+        <div class="f-body">
+          <span class="lbl">Сооснователь</span>
+          <h3><span>Михаил</span></h3>
+          <blockquote>«Красивый проект на бумаге ничего не стоит, если в жизни квартира другая. Сдаём, когда она совпадает с визуализацией.»</blockquote>
+        </div>
+      </article>
+      <article class="f" tabindex="0" style="--bg:url('koncept/img/s-13-2.webp')">
+        <div class="f-photo"><div class="f-ph"><span><b>Н.</b>Портрет<br>на объекте</span></div></div>
+        <div class="f-body">
+          <span class="lbl">Сооснователь</span>
+          <h3><span>Никита</span></h3>
+          <blockquote>«Смета и сроки - это обещание. Поэтому каждый этап у нас закрывается актом и фотографиями.»</blockquote>
+        </div>
+      </article>
+    </div>
+    <p class="f-note">Портреты и цитаты - пример. Снимем вас на объекте и запишем цитаты вашими словами.</p>
+  </section>
+
+  <section class="stone" id="terms" aria-labelledby="t-h">
+    <span class="lbl">Пространство</span>
+    <h2 id="t-h">Смета и сроки в договоре. Результат как на визуализации.</h2>
+    <div class="stone-card"><img src="koncept/img/s-15-5.webp" alt="Кухня с островом из стали и видом на город" loading="lazy"><span class="pill">Все проекты</span></div>
+    <div class="terms">
+      <div><b>Смета по проекту</b><span>Считаем по дизайн-проекту, а не на глаз, и фиксируем в договоре.</span></div>
+      <div><b>Оплата по этапам</b><span>Каждый этап закрываем актом с фотоотчётом.</span></div>
+      <div><b>Авторский надзор</b><span>Дизайнер ведёт объект до последнего светильника.</span></div>
+    </div>
+  </section>
+</div>
+
+<footer class="curtain" id="contacts" aria-labelledby="c-h">
+  <div class="cur-img"></div>
+  <div class="cur-top">
+    <h3 id="c-h">Пришлите планировку - смета и концепция за 48 часов</h3>
+    <div class="contacts">
+      <a href="tel:+79681731317">+7 968 173-13-17</a>
+      <a href="mailto:Prostranstvo.one@yandex.ru">Prostranstvo.one@yandex.ru</a>
+      <span>2-я Брестская, 8, Москва</span>
+      <a class="cta" href="#contacts" style="margin-top:14px">Обсудить проект</a>
+      <a href="/keysy/" style="margin-top:10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(242,239,234,.8)">Концепт студии Нейрошторм · все кейсы →</a>
+    </div>
+  </div>
+  <div class="wordmark" id="wordmark" aria-label="Пространство"></div>
+  <div class="fine"><span>Концепт студии «Нейрошторм», 26.10.2026. Видео и фото с текущего сайта prostranstvo.one, тексты и цифры - пример.</span><span>На боевом сайте первый экран - 3D-сцена</span></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function(){
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var shot = (location.hash.match(/^#kadr-([a-z0-9]+)/) || [])[1] || null;
+  var hasG = !!window.gsap;
+  var N = 110, frames = new Array(N), state = {f: 0}, last = -1;
+  var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  var pad = function(i){ return ("00" + i).slice(-3); };
+
+  /* ---- кадры ---- */
+  function load(i){ return new Promise(function(res){ if (frames[i]) return res(); var im = new Image(); im.decoding = "async"; im.onload = function(){ frames[i] = im; res(); }; im.onerror = function(){ res(); }; im.src = "koncept/f/" + pad(i) + ".webp"; }); }
+  function size(){
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var w = Math.round(innerWidth * dpr), h = Math.round(cv.clientHeight * dpr);
+    if (cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; last = -1; draw(); }
+  }
+  function nearest(i){ for (var k = 0; k < N; k++){ if (frames[i - k]) return frames[i - k]; if (frames[i + k]) return frames[i + k]; } return null; }
+  function draw(){
+    var i = Math.max(0, Math.min(N - 1, Math.round(state.f)));
+    if (i === last) return; var im = nearest(i); if (!im) return; if (frames[i]) last = i;
+    var cw = cv.width, ch = cv.height, s = Math.max(cw / im.naturalWidth, ch / im.naturalHeight);
+    var w = im.naturalWidth * s, h = im.naturalHeight * s;
+    ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h);
+  }
+
+  /* ---- вордмарк по буквам ---- */
+  var wm = document.getElementById("wordmark");
+  "ПРОСТРАНСТВО".split("").forEach(function(ch){ var s = document.createElement("span"); s.textContent = ch; s.setAttribute("aria-hidden", "true"); wm.appendChild(s); });
+
+  /* ---- барабаны ---- */
+  document.querySelectorAll(".drum").forEach(function(d){
+    d.getAttribute("data-to").split("").forEach(function(){ var c = document.createElement("span"); c.className = "col"; for (var n = 0; n <= 9; n++){ var s = document.createElement("span"); s.textContent = n; c.appendChild(s); } d.appendChild(c); });
+  });
+  function rollDrums(instant){
+    document.querySelectorAll(".drum").forEach(function(d){
+      var digits = d.getAttribute("data-to").split("");
+      d.querySelectorAll(".col").forEach(function(c, k){
+        var to = -parseInt(digits[k], 10);
+        if (!hasG || instant){ c.style.transform = "translateY(" + to + "em)"; return; }
+        gsap.fromTo(c, {y: "0em", filter: "blur(0px)"}, {y: to + "em", duration: 1.6 + k * .25, ease: "power3.inOut"});
+        gsap.fromTo(c, {filter: "blur(0px)"}, {keyframes: [{filter: "blur(7px)", duration: .5}, {filter: "blur(0px)", duration: .9 + k * .25}], ease: "none"});
+      });
+    });
+  }
+
+  /* ---- процесс ---- */
+  var steps = [
+    "Принимаем квартиру у застройщика вместе с вами: замеры, акт, фото каждого замечания.",
+    "Планировка, свет, материалы и визуализация каждой комнаты. Смета считается по проекту.",
+    "Электрика, вентиляция, кондиционирование, умный дом. Фото каждой стены до закрытия.",
+    "Машинная штукатурка, камень, дерево, покраска. Каждый этап закрываем актом.",
+    "Мебель, свет, текстиль и декор по проекту. Сдаём квартиру такой, как на визуализации."
+  ];
+  var pLines = document.querySelectorAll(".p-line"), pMedia = document.querySelectorAll("#pCard > *"), pDesc = document.getElementById("pDesc"), pCount = document.getElementById("pCount"), pList = document.getElementById("pList");
+  var cur = -1;
+  function lineH(){ return Math.max(54, Math.min(innerHeight * .13, 120)); }
+  function setStep(n, instant){
+    if (n === cur) return; cur = n;
+    pLines.forEach(function(l, i){ l.classList.toggle("on", i === n); });
+    pMedia.forEach(function(m, i){ m.classList.toggle("on", i === n); });
+    pDesc.textContent = steps[n]; pCount.textContent = "0" + (n + 1) + " / 05";
+    var y = -(n + .5) * lineH();
+    if (hasG && !instant && !reduce) gsap.to(pList, {y: y, duration: .9, ease: "power3.out"}); else pList.style.transform = "translateY(" + y + "px)";
+  }
+  function layoutProcess(){ document.documentElement.style.setProperty("--lh", lineH() + "px"); var c = cur; cur = -1; setStep(Math.max(c, 0), true); }
+
+  /* карточка тянется к курсору, на телефоне медленно покачивается */
+  var mx = .5, my = .5, rx = 0, ry = 0, pCard = document.getElementById("pCard"), fine = matchMedia("(pointer: fine)").matches;
+  addEventListener("pointermove", function(e){ mx = e.clientX / innerWidth; my = e.clientY / innerHeight; }, {passive: true});
+  function tilt(t){
+    var tx, ty;
+    if (fine){ tx = (mx - .5) * 22; ty = -(my - .5) * 16; } else { tx = Math.sin(t * .6) * 6; ty = Math.cos(t * .5) * 4; }
+    rx += (ty - rx) * .08; ry += (tx - ry) * .08;
+    pCard.style.transform = "rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg) rotateZ(" + (-6 + ry * .15).toFixed(2) + "deg)";
+  }
+
+  /* ---- без анимации или без библиотек: всё видно сразу ---- */
+  function staticMode(){
+    document.getElementById("loader").remove(); document.body.classList.remove("locked");
+    for (var i = 0; i < 4; i++) load(i).then(function(){ last = -1; size(); draw(); });
+    document.querySelectorAll('.w[data-ph="1"], .w[data-ph="2"]').forEach(function(w){ w.style.display = "none"; });
+    layoutProcess(); setStep(0, true); rollDrums(true);
+    pLines.forEach(function(l){ l.classList.add("on"); });
+    addEventListener("resize", function(){ size(); layoutProcess(); });
+  }
+  if (!hasG || !window.ScrollTrigger || reduce){ staticMode(); return; }
+
+  gsap.registerPlugin(ScrollTrigger);
+  var lenis = null;
+  if (window.Lenis && !shot){
+    lenis = new Lenis({lerp: .09, smoothWheel: true});
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
+    gsap.ticker.lagSmoothing(0);
+    lenis.stop();
+  }
+  gsap.ticker.add(function(t){ draw(); tilt(t); });
+  addEventListener("resize", function(){ size(); layoutProcess(); });
+
+  /* ---- сцены ---- */
+  function build(){
+    size(); layoutProcess(); setStep(0, true);
+    var W = function(p){ return gsap.utils.toArray('.w[data-ph="' + p + '"]'); };
+    gsap.set(W(1).concat(W(2)), {opacity: 0, filter: "blur(18px)", y: 26});
+
+    /* пролёт: 3 фазы по склейкам кадров (0-35, 36-82, 83-109) */
+    var tl = gsap.timeline({defaults: {ease: "power2.out"}, scrollTrigger: {trigger: "#hero", start: "top top", end: "+=320%", pin: true, scrub: shot ? true : .6, id: "hero"}});
+    tl.to(state, {f: N - 1, ease: "none", duration: 10}, 0);
+    tl.to("#hint", {opacity: 0, duration: .4}, 0);
+    tl.to(".hero-note", {opacity: 0, duration: .5}, 2.4);
+    tl.to(W(0), {opacity: 0, filter: "blur(18px)", y: -26, stagger: .1, duration: .6}, 2.6);
+    tl.to(W(1), {opacity: 1, filter: "blur(0px)", y: 0, stagger: .12, duration: .7}, 3.4);
+    tl.to(W(1), {opacity: 0, filter: "blur(18px)", y: -26, stagger: .1, duration: .6}, 6.8);
+    tl.to(W(2), {opacity: 1, filter: "blur(0px)", y: 0, stagger: .12, duration: .7}, 7.6);
+    tl.to({}, {duration: .6}, 9.4);
+
+    /* кейс: интерьер едет за матовым стеклом */
+    gsap.fromTo("#caseImg", {xPercent: 5, scale: 1.12}, {xPercent: -5, scale: 1, ease: "none", scrollTrigger: {trigger: "#case", start: "top bottom", end: "bottom top", scrub: true}});
+    gsap.from("#casePanel", {x: -40, opacity: 0, filter: "blur(10px)", duration: 1.2, ease: "power3.out", scrollTrigger: {trigger: "#case", start: "top 65%", toggleActions: "play none none reverse"}});
+
+    /* процесс: пять шагов на одном экране */
+    ScrollTrigger.create({trigger: "#process", start: "top top", end: "+=400%", pin: true, id: "process", onUpdate: function(s){ setStep(Math.min(4, Math.floor(s.progress * 5 * .999))); }});
+
+    /* счётчики, потом монограмма раскрывается в камень */
+    ScrollTrigger.create({trigger: "#nums", start: "top 60%", once: true, onEnter: function(){ rollDrums(); }});
+    var sq = document.getElementById("sq");
+    var tl2 = gsap.timeline({scrollTrigger: {trigger: "#nums", start: "top top", end: "+=140%", pin: true, scrub: shot ? true : .5, id: "nums"}});
+    tl2.to(".num, .num-head", {opacity: 0, filter: "blur(10px)", duration: .3, stagger: .03}, .15)
+       .to(sq, {"--fill": 1, duration: .25, ease: "none"}, .1)
+       .to(sq, {scale: function(){ return Math.hypot(innerWidth, innerHeight) / sq.offsetWidth * 1.05; }, rotation: 0, ease: "power2.in", duration: .7}, .3)
+       .set(".nums", {background: "var(--stone)"}, 1);
+
+    /* основатели: портреты открываются снизу, имена поднимаются */
+    gsap.fromTo(".f", {clipPath: "inset(100% 0% 0% 0%)"}, {clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "power4.inOut", stagger: .18, scrollTrigger: {trigger: "#fRow", start: "top 78%", toggleActions: "play none none reverse"}});
+    gsap.from(".f-body h3 span", {yPercent: 105, duration: 1, ease: "power3.out", stagger: .18, delay: .55, scrollTrigger: {trigger: "#fRow", start: "top 78%", toggleActions: "play none none reverse"}});
+
+    /* плавающая кнопка «к предложению» уходит, когда открывается футер со своей ссылкой */
+    ScrollTrigger.create({trigger: ".stone", start: "bottom 92%", onEnter: function(){ gsap.to(".back", {autoAlpha: 0, duration: .3}); }, onLeaveBack: function(){ gsap.to(".back", {autoAlpha: 1, duration: .3}); }});
+
+    /* футер-занавес: буквы поднимаются */
+    gsap.set("#wordmark span", {yPercent: 110});
+    ScrollTrigger.create({trigger: ".stone", start: "bottom 70%", onEnter: function(){ gsap.to("#wordmark span", {yPercent: 0, duration: 1.1, ease: "power4.out", stagger: .045}); }, onLeaveBack: function(){ gsap.to("#wordmark span", {yPercent: 110, duration: .5, ease: "power2.in", stagger: .02}); }});
+
+    ScrollTrigger.refresh();
+  }
+
+  /* ---- лоадер: монограмма-шкала, колода раздаётся, последняя карта становится экраном ---- */
+  var cards = gsap.utils.toArray(".card"), lastCard = document.querySelector(".card.last");
+  var rots = [-9, 7, -4, 5, 0];
+  cards.forEach(function(c, i){ gsap.set(c, {xPercent: -50, yPercent: -50, rotation: rots[i], x: (i - 2) * 6, y: (i - 2) * -4}); });
+  var stills = Array.prototype.map.call(document.querySelectorAll("#loader img, #pCard img"), function(im){ return im.complete ? Promise.resolve() : new Promise(function(r){ im.onload = im.onerror = r; }); });
+  var prog = {v: 0}, fr = document.getElementById("fr"), pct = document.getElementById("pct");
+  function setProg(v){ fr.style.strokeDashoffset = (464 * (1 - v)).toFixed(1); pct.textContent = Math.round(v * 100); }
+  var firstBatch = []; for (var i = 0; i < 24; i++) firstBatch.push(load(i));
+  var done = 0, total = firstBatch.length + stills.length;
+  firstBatch.concat(stills).forEach(function(p){ p.then(function(){ done++; gsap.to(prog, {v: done / total, duration: .4, overwrite: true, onUpdate: function(){ setProg(prog.v); }}); }); });
+  var minTime = new Promise(function(r){ setTimeout(r, 1700); });
+
+  function reveal(){
+    build();
+    for (var k = 24; k < N; k++) load(k);
+    var r = lastCard.getBoundingClientRect();
+    var tl = gsap.timeline({onComplete: function(){ document.getElementById("loader").remove(); document.body.classList.remove("locked"); if (lenis) lenis.start(); ScrollTrigger.refresh(); }});
+    tl.to(prog, {v: 1, duration: .3, onUpdate: function(){ setProg(prog.v); }})
+      .to("#mono, .ld-meta", {opacity: 0, scale: .92, duration: .5, ease: "power2.in"}, "+=.15")
+      .to(cards.slice(0, 4), {x: function(i){ return (i % 2 ? 1 : -1) * innerWidth * .7; }, y: function(i){ return (i - 1.5) * 60; }, rotation: function(i){ return (i % 2 ? 1 : -1) * 24; }, opacity: 0, duration: .9, ease: "power3.in", stagger: .1}, "-=.3")
+      .to(lastCard, {width: innerWidth, height: innerHeight, rotation: 0, x: 0, y: 0, borderRadius: 0, duration: 1.15, ease: "power3.inOut"}, "-=.45")
+      .add(function(){ last = -1; draw(); })
+      .to("#loader", {opacity: 0, duration: .35}, "-=.05")
+      .from(gsap.utils.toArray('.w[data-ph="0"] .wi'), {opacity: 0, filter: "blur(18px)", y: 30, duration: 1.1, ease: "power3.out", stagger: .14}, "-=.2")
+      .from(".nav, .back, .hero-note, #hint", {opacity: 0, duration: .8}, "<");
+  }
+
+  function jumpTo(name){
+    build(); document.getElementById("loader").remove(); document.body.classList.remove("locked");
+    var all = []; for (var k = 0; k < N; k++) all.push(load(k));
+    Promise.all(all.concat(stills)).then(function(){
+      ScrollTrigger.refresh();
+      var h = ScrollTrigger.getById("hero"), p = ScrollTrigger.getById("process"), nm = ScrollTrigger.getById("nums");
+      var y = 0;
+      if (name === "hero1") y = h.start + (h.end - h.start) * .02;
+      if (name === "hero2") y = h.start + (h.end - h.start) * .54;
+      if (name === "hero3") y = h.end - 4;
+      if (name === "case") y = document.getElementById("case").getBoundingClientRect().top + scrollY + innerHeight * .1;
+      if (name === "process") y = p.start + (p.end - p.start) * .5;
+      if (name === "nums") y = nm.start + 2;
+      if (name === "founders") y = document.getElementById("founders").getBoundingClientRect().top + scrollY - 90;
+      if (name === "stone") y = document.getElementById("terms").getBoundingClientRect().top + scrollY + innerHeight * .05;
+      if (name === "footer") y = document.documentElement.scrollHeight;
+      window.scrollTo(0, y); ScrollTrigger.update(); last = -1; draw();
+      if (name === "nums") rollDrums(true);
+      if (name === "footer") gsap.set("#wordmark span", {yPercent: 0});
+      window.__kadr = true;
+    });
+  }
+
+  if (shot && shot !== "loader") { jumpTo(shot); }
+  else if (shot === "loader") { setProg(.62); }
+  else { Promise.all([Promise.all(firstBatch.concat(stills)), minTime]).then(reveal); }
+})();
+</script>
+</body>
+</html>
