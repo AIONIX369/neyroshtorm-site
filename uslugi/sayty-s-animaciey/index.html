@@ -185,6 +185,43 @@
 b.addEventListener('click',function(){var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o)});
 document.addEventListener('click',function(e){if(!d.contains(e.target)&&!b.contains(e.target)){d.classList.remove('open');b.setAttribute('aria-expanded',false)}});})();
 </script>
-
+<div class="ck" id="ck" hidden role="dialog" aria-label="Согласие на cookie">
+  <p>Сайт использует cookie и Яндекс Метрику, чтобы считать посещения. <a href="/politika/#cookie">Подробнее</a></p>
+  <div><button type="button" data-ck="1">Принять</button><button type="button" data-ck="0">Только необходимые</button></div>
+</div>
+<style>
+.ck{position:fixed;right:16px;bottom:16px;z-index:60;max-width:min(420px,calc(100vw - 32px));background:rgba(12,10,18,.88);color:#F4F2FA;border-radius:20px;padding:16px 18px;box-shadow:inset 0 0 0 1px rgba(244,242,250,.14),0 20px 40px rgba(0,0,0,.35);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font:14px/1.45 'Onest',system-ui,sans-serif}
+.ck[hidden]{display:none}.ck p{margin:0 0 12px;color:rgba(244,242,250,.86)}.ck a{color:#A99BFF}
+.ck div{display:flex;gap:8px;flex-wrap:wrap}.ck button{border:0;border-radius:999px;padding:9px 16px;font:500 13.5px 'Onest',system-ui,sans-serif;cursor:pointer;background:rgba(244,242,250,.12);color:#F4F2FA}
+.ck button[data-ck="1"]{background:#F4F2FA;color:#0C0A12}
+</style>
+<script>
+(function () {
+  var ID = 113806364, K = 'ns_cookie';
+  function load() {
+    (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); }; m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a);
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=' + ID, 'ym');
+    ym(ID, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true,
+                     referrer: document.referrer, url: location.href });
+    /* цель: клик по любой ссылке в Telegram */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href*="t.me/"], a[data-tg]');
+      if (a && window.ym) ym(ID, 'reachGoal', 'tg_click');
+    }, true);
+  }
+  var v = null; try { v = localStorage.getItem(K); } catch (e) {}
+  if (v === '1') { load(); return; }
+  if (v === '0') return;
+  var b = document.getElementById('ck'); if (!b) return;
+  b.hidden = false;
+  b.addEventListener('click', function (e) {
+    var x = e.target.getAttribute && e.target.getAttribute('data-ck'); if (x === null) return;
+    try { localStorage.setItem(K, x); } catch (err) {}
+    b.hidden = true; if (x === '1') load();
+  });
+})();
+</script>
 </body>
 </html>
