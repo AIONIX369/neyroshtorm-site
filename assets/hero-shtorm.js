@@ -535,6 +535,20 @@ export function createHeroScene({ panel, section, mobile = false, motion = true,
     CX = wide ? (asp > 1.5 ? 0.665 : 0.64) : 0.5;
     CY = wide ? 0.5 : 0.44;
     DIST = wide ? (asp > 1.5 ? 10 : 11.2) : clamp(4.8 / (0.536 * asp), 12, 22);
+    /* Телефон: знак ровно в промежутке между заголовком и текстом, чтобы не наезжать на них.
+       Плитка со скосом ≈ 2,5 единицы, на экране она занимает 2,5·H / (0,536·DIST) пикселей (fov 30°) */
+    if (!wide) {
+      const h1 = section.querySelector('.h1'), hb = section.querySelector('.hero-bottom');
+      if (h1 && hb) {
+        const pr = panel.getBoundingClientRect();
+        const top = h1.getBoundingClientRect().bottom - pr.top, bot = hb.getBoundingClientRect().top - pr.top, gap = bot - top;
+        if (gap > 90) {
+          CY = (top + bot) / 2 / H;
+          const px = Math.min(gap * 0.74, W * 0.6);
+          DIST = clamp((2.5 * H) / (0.536 * px), 9, 28);
+        }
+      }
+    }
     renderer.setPixelRatio(DPR);
     renderer.setSize(W, H, false);
     renderer.getDrawingBufferSize(bsz); BW = bsz.x; BH = bsz.y;
