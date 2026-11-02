@@ -158,6 +158,14 @@ html.tinted .light-sec { background: transparent; }
 /* Поворот панели при уходе не должен растягивать страницу на телефоне */
 .hero { overflow-x: clip; }
 .phones.sec { z-index: 1; }
+.hero-stack { display: contents; }
+/* Телефон: первый экран не крутится, а прилипает - следующий блок наезжает на него листом.
+   Прилипание делает сам браузер, без скрипта на каждый кадр - поэтому не дрожит */
+.mob .hero-stack { display: block; position: relative; }
+.mob .hero { position: sticky; top: 0; }
+.mob .phones.sec { z-index: 3; background: var(--paper); border-radius: var(--radius-panel) var(--radius-panel) 0 0; box-shadow: 0 -18px 50px rgba(12, 10, 18, .22); }
+/* Телефон: холст робота высотой с экран без адресной строки - когда она прячется, робот не растягивается */
+.mob #gl { height: 100vh; height: 100lvh; }
 /* Сцена первого экрана «Рождение знака в шторме»: свой холст внутри панели, крутится вместе с ней */
 .hero-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
@@ -288,7 +296,7 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
 /* Кто я */
 .about { padding: 14vh 0; }
 .about-in { max-width: 1240px; margin: 0 auto; padding: 0 var(--pad-x); display: grid; grid-template-columns: minmax(220px, 380px) 1fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
-.portrait { aspect-ratio: 4 / 5; border-radius: var(--radius-card); position: relative; overflow: hidden; background: #000; box-shadow: inset 0 0 0 1px var(--line); }
+.portrait { aspect-ratio: 4 / 5; border-radius: var(--radius-card); position: relative; overflow: hidden; clip-path: inset(0 round var(--radius-card)); isolation: isolate; background: #000; box-shadow: inset 0 0 0 1px var(--line); }
 .portrait::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px var(--line); pointer-events: none; }
 /* Глубина фото: подложка-градиент (снята с фото) → вырезанный человек → блики спереди */
 .pt-plate { position: absolute; inset: -10% -6%; will-change: transform;
@@ -401,7 +409,8 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
 </nav>
 
 <main>
-  <!-- 2. Первый экран -->
+  <!-- 2. Первый экран. Обёртка нужна телефону: в её пределах первый экран прилипает, а телефоны наезжают на него -->
+  <div class="hero-stack">
   <section class="hero framed light-sec" id="top">
     <div class="p-bg" data-panel></div>
     <div class="p-fg on-panel" data-panel>
@@ -447,6 +456,7 @@ html:not(.motion) .cframe { position: relative; margin: 0; width: auto; transfor
     </div>
     <a class="btn btn-dark ph-cta" href="#check" data-reveal>Проверить свой бизнес</a>
   </section>
+  </div>
 
   <!-- 4. Сфера -->
   <section class="sphere sec" id="sphere">
@@ -1043,7 +1053,7 @@ if (GL) {
 
 /* ================= Раскладка ================= */
 function layout(force) {
-  const w = innerWidth, h = innerHeight;
+  const w = innerWidth, h = MOBILE ? (canvas.clientHeight || innerHeight) : innerHeight;   // телефон: высота холста (100lvh), а не окна
   if (!w || !h) return false;
   if (!force && COARSE && w === lastW) return false;
   lastW = w; W = w; H = h;
@@ -1237,13 +1247,15 @@ if (MOTION) {
   /* Первый экран закручивается на 90° вправо и уменьшается, из-за него выходит следующий блок.
      Без пина: пин делает секцию отдельным слоем и ломает порядок «фон панели → 3D → текст».
      Панель стоит на месте за счёт y = прокрутке. */
-  {
+  if (!MOBILE) {
     const heroSec = $('.hero'), heroEls = $$('.hero [data-panel]');
     const tl = gsap.timeline({ scrollTrigger: { trigger: heroSec, start: 'top top', end: 'bottom top', scrub: true, invalidateOnRefresh: true,
       onUpdate: (st) => { S.heroSpin = st.progress; heroSec.classList.toggle('leaving', st.progress > 0.08); } } });
     tl.fromTo(heroEls, { y: 0 }, { y: () => heroSec.offsetHeight, ease: 'none', duration: 1, immediateRender: false }, 0)
       .fromTo(heroEls, { rotation: 0, scale: 1 }, { rotation: 90, scale: 0.3, ease: 'power1.in', duration: 1, transformOrigin: '50% 50%', immediateRender: false }, 0)
       .fromTo(heroEls, { opacity: 1 }, { opacity: 0, ease: 'none', duration: 0.22, immediateRender: false }, 0.78);
+  }
+  {
     gsap.fromTo('.phone-pair', { scale: 0.86 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '#phones', start: 'top bottom', end: 'top top', scrub: true } });
   }
 
@@ -1415,9 +1427,10 @@ window.__studio = { S, F, get mScale() { return mScale; }, get anchor() { return
 
 /* ================= Цикл ================= */
 let acc = 0, visible = true;
-const heroBox = $('.hero');
+const phonesBox = $('#phones');
 document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
-if (heroScene) gsap.ticker.add((t, deltaMs) => { if (visible) heroScene.tick(Math.min(deltaMs / 1000, 0.05)); });
+/* Телефон: первый экран прилип и закрыт телефонами целиком - шторм не рисуем */
+if (heroScene) gsap.ticker.add((t, deltaMs) => { if (visible && !(MOBILE && phonesBox.getBoundingClientRect().top <= 0)) heroScene.tick(Math.min(deltaMs / 1000, 0.05)); });
 if (MOTION) {
   if (GL) {
     gsap.ticker.add((t, deltaMs) => {
@@ -1425,8 +1438,8 @@ if (MOTION) {
       const dt = Math.min(deltaMs / 1000, 0.05);
       acc += dt;
       if (!MOBILE && acc < 1 / 62) return;
-      /* Телефон: пока первый экран закрывает всё, общую сцену не рисуем - видеокарта занята штормом */
-      if (MOBILE && !loading && mScale < 0.01 && !heroBox.classList.contains('leaving') && heroBox.getBoundingClientRect().bottom >= H - 2) { acc = 0; return; }
+      /* Телефон: пока на экране первый экран и телефоны поверх него, общую сцену не рисуем - видеокарта занята штормом */
+      if (MOBILE && !loading && mScale < 0.01 && phonesBox.getBoundingClientRect().bottom >= innerHeight - 2) { acc = 0; return; }
       renderFrame(acc);
       acc = 0;
     });
