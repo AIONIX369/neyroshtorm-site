@@ -872,13 +872,13 @@ gsap.ticker.add(function(time, dt){
 });
 
 
-/* ---------- фон-чертёж: сетка слоями + линза под курсором ---------- */
+/* ---------- фон-чертёж: сетка слоями + микросетка под курсором ---------- */
 (function(){
   var cv = $('#bp'), ctx = cv.getContext('2d'); if (!ctx) return;
   html.classList.add('bp');
   var DPR = Math.min(window.devicePixelRatio || 1, matchMedia('(max-width:820px)').matches ? 1.5 : 2);
   var W = 0, H = 0, col = {};
-  var BIG = 48, FINE = 12, R = 190, K = .32;
+  var BIG = 48, FINE = 12, R = 190;
   function readCol(){ var cs = getComputedStyle(html); col.grid = cs.getPropertyValue('--grid').trim(); col.hi = cs.getPropertyValue('--line-2').trim(); col.ac = cs.getPropertyValue('--accent').trim(); dirty = true; }
   function size(){ W = innerWidth; H = cv.clientHeight || innerHeight; cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR); dirty = true; }
   var cx = -9999, cy = -9999, tx = -9999, ty = -9999, amp = 0, tAmp = 0, lastSY = -1, dirty = true;
@@ -889,29 +889,13 @@ gsap.ticker.add(function(time, dt){
   document.addEventListener('pointerleave', function(){ tAmp = 0; xh.classList.remove('on'); });
   addEventListener('blur', function(){ tAmp = 0; xh.classList.remove('on'); });
   addEventListener('touchend', function(){ tAmp = 0; }, {passive:true});
-  // сдвиг точки линзой
-  function lens(x, y){
-    if (amp < .01) return [x, y];
-    var dx = x - cx, dy = y - cy, r2 = dx*dx + dy*dy, f = K*amp*Math.exp(-r2/(R*R));
-    return [x + dx*f, y + dy*f];
-  }
   function lines(step, off, near, alphaMul){
     // вертикали
-    var x0 = ((off.x % step) + step) % step, y0 = ((off.y % step) + step) % step, x, y, p, i;
-    for (x = x0 - step; x <= W + step; x += step){
-      ctx.beginPath();
-      if (amp > .01 && Math.abs(x - cx) < R*2.2){
-        for (y = -step; y <= H + step; y += 14){ p = lens(x, y); if (y < 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); }
-      } else { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
-      ctx.stroke();
-    }
-    for (y = y0 - step; y <= H + step; y += step){
-      ctx.beginPath();
-      if (amp > .01 && Math.abs(y - cy) < R*2.2){
-        for (x = -step; x <= W + step; x += 14){ p = lens(x, y); if (x < 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); }
-      } else { ctx.moveTo(0, y); ctx.lineTo(W, y); }
-      ctx.stroke();
-    }
+    var x0 = ((off.x % step) + step) % step, y0 = ((off.y % step) + step) % step, x, y;
+    ctx.beginPath();
+    for (x = x0; x <= W; x += step){ ctx.moveTo(Math.round(x)+.5, 0); ctx.lineTo(Math.round(x)+.5, H); }
+    for (y = y0; y <= H; y += step){ ctx.moveTo(0, Math.round(y)+.5); ctx.lineTo(W, Math.round(y)+.5); }
+    ctx.stroke();
   }
   function draw(){
     var sy = window.scrollY;
@@ -922,7 +906,7 @@ gsap.ticker.add(function(time, dt){
     var offBig = {x:0, y:-sy*.45};
     if (amp > .01){
       var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R*1.6);
-      g.addColorStop(0, col.hi); g.addColorStop(1, col.grid);
+      g.addColorStop(0, col.hi); g.addColorStop(.6, col.grid); g.addColorStop(1, col.grid);
       ctx.strokeStyle = g;
     } else ctx.strokeStyle = col.grid;
     lines(BIG, offBig);
@@ -932,7 +916,7 @@ gsap.ticker.add(function(time, dt){
       ctx.beginPath(); ctx.arc(cx, cy, R*1.15, 0, Math.PI*2); ctx.clip();
       var g2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, R*1.15);
       g2.addColorStop(0, col.grid); g2.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.strokeStyle = g2; ctx.globalAlpha = amp;
+      ctx.strokeStyle = g2; ctx.globalAlpha = amp*.55;
       lines(FINE, {x:0, y:-sy*.45});
       ctx.restore();
       // засечка центра
