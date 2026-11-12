@@ -156,3 +156,24 @@ p:target { border-radius: 12px; padding: 12px 14px; margin-left: -14px; }
   .tbl td.p { white-space: normal; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Форма заявки (12.11) - показывается, только когда задан zayavki_url */
+.zf { max-width: 760px; margin-top: 28px; }
+.zf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.zf-f { display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: var(--muted); }
+.zf-wide { grid-column: 1 / -1; }
+.zf input:not([type=checkbox]), .zf select, .zf textarea { width: 100%; font: 16px/1.4 'Onest', system-ui, sans-serif; color: var(--raw-white); background: rgba(244, 242, 250, .06); border: 0; box-shadow: inset 0 0 0 1px rgba(244, 242, 250, .16); border-radius: 16px; padding: 14px 16px; transition: box-shadow .3s; -webkit-appearance: none; appearance: none; }
+.zf select { background-image: linear-gradient(45deg, transparent 50%, var(--fog) 50%), linear-gradient(135deg, var(--fog) 50%, transparent 50%); background-position: calc(100% - 22px) 52%, calc(100% - 16px) 52%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 40px; }
+.zf select option { color: var(--ink); }
+.zf textarea { resize: vertical; min-height: 110px; }
+.zf input:not([type=checkbox]):focus, .zf select:focus, .zf textarea:focus { outline: 0; box-shadow: inset 0 0 0 1.5px var(--accent-soft); }
+.zf-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.zf-ck { display: flex; gap: 12px; align-items: flex-start; margin-top: 20px; font-size: 14.5px; color: var(--fog); cursor: pointer; max-width: 40em; }
+.zf-ck input { flex: none; width: 20px; height: 20px; margin-top: 2px; accent-color: var(--accent); }
+.zf-ck a, .zf-msg a { color: var(--accent-soft); text-decoration: underline; text-underline-offset: 3px; }
+.zf .btns { margin-top: 22px; }
+.zf button[disabled] { opacity: .6; cursor: default; transform: none; }
+.blk .zf-msg { margin-top: 14px; min-height: 1.6em; font-size: 15px; color: var(--fog); }
+.blk .zf-msg.ok { color: var(--raw-lime); }
+.blk .zf-msg.bad { color: var(--raw-bloom); }
+@media (max-width: 640px) { .zf-grid { grid-template-columns: 1fr; } }
