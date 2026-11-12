@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Сочная основа: лиловый - фиолетовый - розовый -->
+    <linearGradient id="base" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#9C7CFF"/>
+      <stop offset=".45" stop-color="#5B3DF5"/>
+      <stop offset="1" stop-color="#2E0CC2"/>
+    </linearGradient>
+    <radialGradient id="bloom" cx=".82" cy=".9" r=".7">
+      <stop offset="0" stop-color="#FF4FAE" stop-opacity="1"/>
+      <stop offset=".55" stop-color="#F3A6D8" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#F3A6D8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow" cx=".28" cy=".18" r=".55">
+      <stop offset="0" stop-color="#E9E3FF" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#E9E3FF" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Стекло: блик сверху, затемнение снизу, светлая кромка -->
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".46"/>
+      <stop offset=".42" stop-color="#fff" stop-opacity=".08"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="deep" x1="0" y1="0" x2="0" y2="1">
+      <stop offset=".55" stop-color="#1A0563" stop-opacity="0"/>
+      <stop offset="1" stop-color="#1A0563" stop-opacity=".38"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".95"/>
+      <stop offset=".35" stop-color="#fff" stop-opacity=".18"/>
+      <stop offset=".7" stop-color="#fff" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#FFD3EC" stop-opacity=".75"/>
+    </linearGradient>
+        <clipPath id="tile"><rect x="3" y="3" width="58" height="58" rx="17"/></clipPath>
+    <linearGradient id="markg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D6CBFF"/></linearGradient>
+    <mask id="nsm" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="#fff"/><path d="M60,20 C64.00,45.28 74.72,56.00 100,60 C74.72,64.00 64.00,74.72 60,100 C56.00,74.72 45.28,64.00 20,60 C45.28,56.00 56.00,45.28 60,20 Z" fill="#000"/></mask>
+    <filter id="markfx" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="b"/>
+      <feFlood flood-color="#FFFFFF" flood-opacity=".35"/>
+      <feComposite in2="b" operator="in" result="glow"/>
+      <feDropShadow in="SourceGraphic" dx="0" dy="4" stdDeviation="4" flood-color="#22077A" flood-opacity=".5" result="sh"/>
+      <feMerge><feMergeNode in="glow"/><feMergeNode in="sh"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Толщина стекла снизу -->
+  <rect x="3" y="5" width="58" height="58" rx="17" fill="#2A0FA0" opacity=".55"/>
+  <g clip-path="url(#tile)">
+    <rect x="3" y="3" width="58" height="58" fill="url(#base)"/>
+    <rect x="3" y="3" width="58" height="58" fill="url(#bloom)"/>
+    <rect x="3" y="3" width="58" height="58" fill="url(#glow)"/>
+    <rect x="3" y="3" width="58" height="58" fill="url(#deep)"/>
+    <path d="M3 3 H61 V27 C46 33 20 33 3 25 Z" fill="url(#sheen)"/>
+  </g>
+  <rect x="3.6" y="3.6" width="56.8" height="56.8" rx="16.4" fill="none" stroke="url(#rim)" stroke-width="1.2"/>
+  <rect x="6" y="6" width="52" height="52" rx="14.5" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width=".8"/>
+  <!-- Знак S-блок: квадрат 120 ед., масштаб 0.25 -->
+  <g filter="url(#markfx)" transform="translate(14.6 13.8) scale(.29)">
+    <g mask="url(#nsm)" fill="url(#markg)"><path d="M0,56 V40 A40,40 0 0 1 40,0 H120 V56 Z"/><path d="M120,64 V80 A40,40 0 0 1 80,120 H0 V64 Z"/></g>
+  </g>
+</svg>
